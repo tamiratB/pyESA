@@ -25,4 +25,3 @@ I made minor changes to the core PyCPT plotting functions to include administrat
 This shapefile variable argument for each function is optional. You can pass it to the needed function or skip it if not required. These changes do not break the original code.
 
 Enjoy!
-
