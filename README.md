@@ -6,15 +6,19 @@ I made minor changes to the core pycpt plotting functions to include administrat
 
 **Steps to follow**
 
-Copy the following files to the specified directory:
-1. `subseasonal.py` and `notebook.py` into:
-   `/home/username/miniconda3/envs/pycpt-2.8.2/lib/python3.10/site-packages/pycpt/`
+1. Clone this github as follows:
 
-`Next steps:`
+`git clone https://github.com/tamiratB/pyESA`
 
-2. Run the Jupyter Notebook and select "Restart & Clear Output".
-3. Define the path to your regional shapefiles (refer to the update in `exampleNotebooks/pycpt-operational.ipynb` given in this github).
-4. Run all cells in `pycpt-operational.ipynb`.
+2. Copy the following files from the cloned repository to the specified directory:
+
+`cp pyESA/pycpt/src/pycpt/{subseasonal.py,notebook.py}`   `/home/username/miniconda3/envs/pycpt-2.8.2/lib/python3.10/site-packages/pycpt/`
+
+*Next steps:*
+
+3. Run the Jupyter Notebook and select "Restart & Clear Output".
+4. Define the path to your regional shapefiles (refer to the update in `exampleNotebooks/pycpt-operational.ipynb` given in this github).
+5. Run all cells in `pycpt-operational.ipynb`.
 
 Enjoy!
 
