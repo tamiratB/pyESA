@@ -16,7 +16,8 @@ I made minor changes to the core pycpt plotting functions to include administrat
 
 *Next steps:*
 
-3. Run the Jupyter Notebook and select "Restart & Clear Output".
+3. Activate your pycpt conda environment (e.g., `conda activate pycpt-2.8.2`)
+4. Run the Jupyter Notebook (e.g., `jupyter-notebook`) and select "Restart & Clear Output".
 4. Define the path to your regional shapefiles (refer to the update in `exampleNotebooks/pycpt-operational.ipynb` given in this github).
 5. Run all cells in `pycpt-operational.ipynb`.
 
