@@ -247,7 +247,7 @@ def evaluate_models(hindcast_data, forecast_data, Y, MOS, cpt_args, domain_dir, 
     return hcsts, fcsts, skill, pxs, pys
 
 
-def plot_skill(skill, MOS, files_root, skill_metrics, adminLevel):
+def plot_skill(skill, MOS, files_root, skill_metrics, adminLevel = None):
     for metric_name in skill_metrics:
         nrows = len(skill['model'])
         ncols = len(skill['lead_name'])
@@ -273,7 +273,8 @@ def plot_skill(skill, MOS, files_root, skill_metrics, adminLevel):
                         add_colorbar=j == len(skill['lead_name']) - 1)
                 )
                 ax[i][j].coastlines()
-                ax[i][j].add_feature(adminLevel)
+                if (adminLevel != None):
+                    ax[i][j].add_feature(adminLevel)
                 ax[i][j].add_feature(cartopy.feature.BORDERS)
                 ax[0][j].set_title(lead_name) # todo looks fishy
 
@@ -297,7 +298,7 @@ def plot_skill(skill, MOS, files_root, skill_metrics, adminLevel):
 
 
 def plot_eof_modes(
-        pxs, pys, MOS, files_root, adminLevel
+        pxs, pys, MOS, files_root, adminLevel = None
 ):
     nmodes = 5
     cmap = plt.get_cmap("cpt.loadings", 11)
@@ -414,9 +415,9 @@ def plot_eof_modes(
 
                     map1_ax.coastlines()
                     map2_ax.coastlines()
-
-                    map1_ax.add_feature(adminLevel)
-                    map2_ax.add_feature(adminLevel)
+                    if (adminLevel != None):
+                        map1_ax.add_feature(adminLevel)
+                        map2_ax.add_feature(adminLevel)
 
                     map1_ax.add_feature(cartopy.feature.BORDERS)
                     map2_ax.add_feature(cartopy.feature.BORDERS)
@@ -432,7 +433,7 @@ def plot_eof_modes(
 
 
 def plot_cca_modes(
-        pxs, pys, MOS, files_root, adminLevel
+        pxs, pys, MOS, files_root, adminLevel = None
 ):
     nmodes = 3
     cmap = plt.get_cmap("cpt.loadings", 11)
@@ -533,9 +534,9 @@ def plot_cca_modes(
 
                     map1_ax.coastlines()
                     map2_ax.coastlines()
-
-                    map1_ax.add_feature(adminLevel)
-                    map2_ax.add_feature(adminLevel)
+                    if (adminLevel != None):
+                        map1_ax.add_feature(adminLevel)
+                        map2_ax.add_feature(adminLevel)
 
                     map1_ax.add_feature(cartopy.feature.BORDERS)
                     map2_ax.add_feature(cartopy.feature.BORDERS)
@@ -558,7 +559,7 @@ def plot_forecasts(
     color_bar=None,
     vmin=None,
     vmax=None,
-    adminLevel,
+    adminLevel = None,
 ):
     prob_missing_value_flag = -1
     my_dpi = 100
@@ -600,7 +601,8 @@ def plot_forecasts(
                 orientation=graph_orientation,
             )
             cartopyInstance.add_feature(cartopy.feature.BORDERS, edgecolor="black")
-            cartopyInstance.add_feature(adminLevel)
+            if (adminLevel != None):
+                cartopyInstance.add_feature(adminLevel)
             cartopyInstance.set_title("")
 
             cartopyInstance.spines["left"].set_color("blue")
@@ -666,6 +668,8 @@ def plot_forecasts(
                 cartopy.feature.BORDERS, edgecolor="black"
             )  # ,linewidth=4.5
             art.axes.coastlines(edgecolor="black")  # ,linewidth=4.5
+            if (adminLevel != None):
+                art.axes.add_feature(adminLevel)
             plt.savefig(
                 files_root / "figures" / "Test.png",
                 bbox_inches="tight",
@@ -751,7 +755,7 @@ def construct_mme(hcsts, Y, fcsts, ensemble, cpt_args, domain_dir):
 
 
 def plot_mme_skill(
-        predictor_names, nextgen_skill, MOS, files_root, skill_metrics, adminLevel
+        predictor_names, nextgen_skill, MOS, files_root, skill_metrics, adminLevel = None
 ):
     graph_orientation = ce.graphorientation(
         len(nextgen_skill["X"]),
@@ -785,7 +789,8 @@ def plot_mme_skill(
             )
 
             ax[i][j].coastlines()
-            ax[i][j].add_feature(adminLevel)
+            if (adminLevel != None):
+                ax[i][j].add_feature(adminLevel)
             ax[i][j].add_feature(cartopy.feature.BORDERS)
             ax[i][j].set_title(skill_metric.upper())
 
@@ -808,6 +813,7 @@ def plot_mme_forecasts(
     MOS,
     files_root,
     det_fcst,
+    adminLevel = None,
 ):
     missing_value_flag = -999
     prob_missing_value_flag = -1
@@ -845,6 +851,8 @@ def plot_mme_forecasts(
 
         cartopyInstance.add_feature(cartopy.feature.BORDERS)
         cartopyInstance.set_title("")
+        if (adminLevel != None):
+            cartopyInstance.add_feature(adminLevel)
         # cartopyInstance.axis("off")
 
         figName = MOS + "_ensemble_probabilistic-deterministicForecast-lead-{lead_name}.png"
@@ -893,6 +901,8 @@ def plot_mme_forecasts(
 
         art.axes.add_feature(cartopy.feature.BORDERS, edgecolor="black")  # ,linewidth=4.5
         art.axes.coastlines(edgecolor="black")
+        if (adminLevel != None):
+            art.axes.add_feature(adminLevel)
 
         plt.savefig(
             files_root / "figures" / "Test.png",
@@ -934,6 +944,7 @@ def plot_flex_forecasts(
     MOS,
     files_root,
     color_bar,
+    adminLevel = None,
 ):
     if point_latitude is None:
         point_latitude = round(
@@ -1040,6 +1051,8 @@ def plot_flex_forecasts(
         )
         coasts = art.axes.coastlines()
         art.axes.add_feature(cartopy.feature.BORDERS)
+        if (adminLevel != None):
+            art.axes.add_feature(adminLevel)
         gl = map_ax.gridlines(
                 crs=ccrs.PlateCarree(),
                 draw_labels=True,
