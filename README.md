@@ -17,11 +17,11 @@ I made minor changes to the core PyCPT plotting functions to include administrat
 *Next steps:*
 
 3. Activate your pycpt conda environment (e.g., `conda activate pycpt-2.8.2`)
-4. Run the Jupyter Notebook (e.g., `jupyter-notebook`) and open your `pycpt-operational.ipynb` notebook.
+4. Run the Jupyter Notebook (e.g., `jupyter-notebook`) and open your `pycpt-operational.ipynb` or `exampleNotebooks/pycpt-s2s.ipynb` notebook.
 5. Perform a fresh start by selecting "Restart & Clear Output" or restarting the Jupyter kernel to incorporate the changes from step 2.
-4. Define the path to your regional shapefiles and pass this defined variable for each plotting function as the last argument (refer to the update in `exampleNotebooks/pycpt-operational.ipynb` provided in this github repository).
-5. Run all cells in `pycpt-operational.ipynb`.
+4. Define the path to your regional shapefiles and pass this defined variable for each plotting function as the last argument (refer to the update in `exampleNotebooks/pycpt-operational.ipynb` or `exampleNotebooks/pycpt-s2s.ipynb`  provided in this github repository).
+5. Run all cells in `pycpt-operational.ipynb` and/or `exampleNotebooks/pycpt-s2s.ipynb`.
 
-This shapefile object argument for each function is optional. You can pass it to the needed function or skip it if not required. These changes do not break the original code.
+This shapefile variable argument for each function is optional. You can pass it to the needed function or skip it if not required. These changes do not break the original code.
 
 Enjoy!
