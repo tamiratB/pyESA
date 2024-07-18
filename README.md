@@ -2,7 +2,7 @@
 
 PyCPT is a python interface to CPT, the IRI Climate Predictability Tool (https://iri-pycpt.github.io/).
 
-I made minor changes to the core PyCPT plotting functions to include administrative boundary shapefiles. If you would like to incorporate these changes for your specific country, please follow these steps and refer to the specific example provided in `exampleNotebooks` for Ethiopia. This has been tested with the latest `pycpt-2.8.2` as installed following the instructions at [PyCPT Installation Guide](https://iri-pycpt.github.io/installation/).
+I made minor changes to the core PyCPT plotting functions to include administrative boundary shapefiles. If you would like to incorporate these changes for your specific country, please follow these steps and refer to the specific examples provided in `exampleNotebooks` for Ethiopia. This has been tested with the latest `pycpt-2.8.2` as installed following the instructions at [PyCPT Installation Guide](https://iri-pycpt.github.io/installation/).
 
 **Steps to follow**
 
