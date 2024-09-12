@@ -1390,7 +1390,7 @@ def construct_flex_fcst(MOS, cpt_args, det_fcst, threshold, isPercentile, Y, pev
 
     return exceedance_prob, fcst_scale, climo_scale, adjusted_fcst_mu, climo_mu, Y2, ntrain, threshold
 
-def plot_domains(predictor_extent, predictand_extent):
+def plot_domains(predictor_extent, predictand_extent, files_root):
         #Create a feature for States/Admin 1 regions at 1:10m from Natural Earth
         states_provinces = cartopy.feature.NaturalEarthFeature(
                 category='cultural',
@@ -1398,13 +1398,14 @@ def plot_domains(predictor_extent, predictand_extent):
                 scale='10m',
                 facecolor='none')
 
-        fig = plt.subplots(figsize=(5,5), subplot_kw=dict(projection=ccrs.PlateCarree()))
+        fig, axx = plt.subplots(figsize=(10,6), subplot_kw=dict(projection=ccrs.PlateCarree()))
         titles = ['Predictor', 'Predictand']
         extents = [predictor_extent, predictand_extent]
         for i in range(2):
             title = titles[i]
             e = extents[i]
             ax = plt.subplot(1, 2, i+1, projection=ccrs.PlateCarree())
+            ax.autoscale(enable=True)
             ax.set_extent([e['west'], e['east'], e['north'], e['south']], ccrs.PlateCarree())
 
             # Put a background image on for nice sea rendering.
@@ -1412,12 +1413,21 @@ def plot_domains(predictor_extent, predictand_extent):
 
             ax.add_feature(cartopy.feature.LAND)
             ax.add_feature(cartopy.feature.COASTLINE)
+            ax.add_feature(cartopy.feature.BORDERS)
             ax.set_title(f"{title} domain")
             pl=ax.gridlines(crs=ccrs.PlateCarree(), draw_labels=True,
-                              linewidth=2, color='gray', alpha=0.5, linestyle='--')
+                              linewidth=2, color='gray', alpha=0.4, linestyle=':')
             pl.xlabels_top = False
             pl.ylabels_left = False
             pl.xformatter = cartopy.mpl.gridliner.LONGITUDE_FORMATTER
             pl.yformatter = cartopy.mpl.gridliner.LATITUDE_FORMATTER
-            ax.add_feature(states_provinces, edgecolor='gray')
+            #ax.add_feature(states_provinces, edgecolor='gray')
+
+        # save plots
+        figName = "predictor_and_predictand_domains.png"
+        fig.savefig(
+            files_root / "figures" / figName,
+            bbox_inches="tight",
+        )
+
         plt.show()
