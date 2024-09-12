@@ -690,11 +690,11 @@ def plot_forecasts(
             # save plots
             figName = (
                 MOS
-                + "var"
+                + ' ' + lead_name + ' '
                 + "["
                 + model
                 + "]"
-                + "[determinstic-probabilistic]-Forecast"
+                + "[determinstic-probabilistic]-Forecasts"
                 + ".png"
             )
             fig.savefig(
