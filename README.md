@@ -14,7 +14,7 @@ I made minor changes to the core PyCPT plotting functions to include administrat
 
 `cp pyESA/pycpt/src/pycpt/{subseasonal.py,notebook.py}`   `/home/username/miniconda3/envs/pycpt-2.8.2/lib/python3.10/site-packages/pycpt/`
 
-Note: `username` typically refers to the name of your computer login account. Please verify the path to your PyCPT installation.
+**Note:** `username` typically refers to the name of your computer login account. Please verify the path to your PyCPT installation.
 
 *Next steps:*
 
