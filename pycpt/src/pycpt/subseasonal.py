@@ -255,13 +255,13 @@ def plot_skill(skill, MOS, files_root, skill_metrics, adminLevel = None):
             nrows=nrows,
             ncols=ncols,
             subplot_kw={"projection": cartopy.crs.PlateCarree()},
-            figsize=(8, 2 * nrows),
+            figsize=(2 * ncols + 1, 2 * nrows),
             squeeze=False,
         )
         metric = SKILL_METRICS[metric_name]
         for i, model in enumerate(skill['model'].values):
             for j, lead_name in enumerate(skill['lead_name'].values):
-                (
+                p = (
                     skill[metric_name].sel(model=model, lead_name=lead_name)
                     .where(lambda x: x > missing_value_flag)
                     .plot(
@@ -270,9 +270,13 @@ def plot_skill(skill, MOS, files_root, skill_metrics, adminLevel = None):
                         vmin=metric[1],
                         vmax=metric[2],
                         # colorbar only on last (rightmost) plot
-                        add_colorbar=j == len(skill['lead_name']) - 1)
+                        add_colorbar = False) #j == len(skill['lead_name']) - 1)
                 )
                 ax[i][j].coastlines()
+                ## custom
+                if (j == len(skill['lead_name']) - 1):
+                    cax = fig.add_axes([0.95, 0.2, 0.01, 0.60]) #[left, bottom, width, height]
+                    cbar = fig.colorbar(p, cax=cax, ax=ax[i][j], label=metric_name)
                 if (adminLevel != None):
                     ax[i][j].add_feature(adminLevel)
                 ax[i][j].add_feature(cartopy.feature.BORDERS)
@@ -328,7 +332,7 @@ def plot_eof_modes(
 
                     print(f"{model.upper()} {lead_name}: EOF {int(mode)}")
 
-                    fig = plt.figure(figsize=(20, 5))
+                    fig = plt.figure(figsize=(16, 5))
 
                     gs0 = gridspec.GridSpec(1, 3, figure=fig)
                     gs00 = gridspec.GridSpecFromSubplotSpec(3, 3, subplot_spec=gs0[0])
@@ -339,8 +343,10 @@ def plot_eof_modes(
                         "M",
                     ).assign_coords({"M": ["x", "y"]})
 
+                   # print(px)
+
                     map1_ax = fig.add_subplot(gs00[:, :], projection=ccrs.PlateCarree())
-                    ts_ax = fig.add_subplot(gs01[1:3, 1:])
+                    ts_ax = fig.add_subplot(gs01[1:3, :])
                     map2_ax = fig.add_subplot(gs02[:, :], projection=ccrs.PlateCarree())
 
                     art = (
@@ -360,8 +366,8 @@ def plot_eof_modes(
                         ),
                         1,
                     )
-
-                    cb = plt.colorbar(art, orientation=graph_orientation)
+                    ## custom
+                    cb = plt.colorbar(art, orientation=graph_orientation, ax=map1_ax, shrink=0.85)
                     cb.set_label(label="x_eof_loadings", size=14)
                     cb.ax.tick_params(labelsize=12)
                     if graph_orientation == "horizontal":
@@ -384,18 +390,18 @@ def plot_eof_modes(
                         ),
                         1,
                     )
-                    cb = plt.colorbar(art, orientation=graph_orientation)
+                    cb = plt.colorbar(art, orientation=graph_orientation, ax=map2_ax, shrink=0.85)
                     ticks_loc = cb.ax.get_xticklabels()
                     cb.set_label(label="y_eof_loadings", size=14)
                     cb.ax.tick_params(labelsize=12)
 
                     if graph_orientation == "horizontal":
                         cb.ax.tick_params(axis="x", which="major", rotation=-45)
-
+                    ## custom
                     primitive = ts.plot.line(
-                        marker="x", ax=ts_ax, markersize=12, hue="M", add_legend=False
+                        marker=".", ax=ts_ax, markersize=5, hue="M", add_legend=False
                     )
-                    ts_ax.grid(axis="x", linestyle="-.")
+                    ts_ax.grid(axis="x", linestyle=":")
                     ts_ax.legend(
                         handles=primitive, labels=list(ts.coords["M"].values), loc="best"
                     )
@@ -415,6 +421,7 @@ def plot_eof_modes(
 
                     map1_ax.coastlines()
                     map2_ax.coastlines()
+                    ## custom
                     if (adminLevel != None):
                         map1_ax.add_feature(adminLevel)
                         map2_ax.add_feature(adminLevel)
@@ -467,11 +474,11 @@ def plot_cca_modes(
                         f" - Canonical Correlation = {ce.truncate(cancorr[0], 2)}"
                     )
 
-                    fig = plt.figure(figsize=(20, 5))
+                    fig = plt.figure(figsize=(16, 5))
 
                     gs0 = gridspec.GridSpec(1, 3, figure=fig)
                     gs00 = gridspec.GridSpecFromSubplotSpec(3, 3, subplot_spec=gs0[0])
-                    gs01 = gridspec.GridSpecFromSubplotSpec(5, 10, subplot_spec=gs0[1])
+                    gs01 = gridspec.GridSpecFromSubplotSpec(4, 5, subplot_spec=gs0[1])
                     gs02 = gridspec.GridSpecFromSubplotSpec(3, 3, subplot_spec=gs0[2])
                     ts = xr.concat(
                         [
@@ -482,7 +489,7 @@ def plot_cca_modes(
                     ).assign_coords({"M": ["x", "y"]})
 
                     map1_ax = fig.add_subplot(gs00[:, :], projection=ccrs.PlateCarree())
-                    ts_ax = fig.add_subplot(gs01[1:3, 1:])
+                    ts_ax = fig.add_subplot(gs01[1:3, :])
                     map2_ax = fig.add_subplot(gs02[:, :], projection=ccrs.PlateCarree())
 
                     art = (
@@ -499,7 +506,7 @@ def plot_cca_modes(
                         len(pys["Y"])
                     )
 
-                    cb = plt.colorbar(art, orientation=graph_orientation)
+                    cb = plt.colorbar(art, orientation=graph_orientation, ax=map1_ax, shrink=0.85)
                     cb.set_label(label="x_cca_loadings", size=14)
                     cb.ax.tick_params(labelsize=12)
 
@@ -511,14 +518,14 @@ def plot_cca_modes(
                             ax=map2_ax, add_colorbar=False, vmin=Vmin, vmax=Vmax, cmap=cmap
                         )
                     )
-                    cb = plt.colorbar(art, orientation=graph_orientation)
+                    cb = plt.colorbar(art, orientation=graph_orientation, ax=map2_ax, shrink=0.85)
                     cb.set_label(label="y_cca_loadings", size=14)
                     cb.ax.tick_params(labelsize=12)
 
                     primitive = ts.plot.line(
-                        marker="x", ax=ts_ax, markersize=12, hue="M", add_legend=False
+                        marker=".", ax=ts_ax, markersize=5, hue="M", add_legend=False
                     )
-                    ts_ax.grid(axis="x", linestyle="-.")
+                    ts_ax.grid(axis="x", linestyle=":")
                     ts_ax.legend(
                         handles=primitive, labels=list(ts.coords["M"].values), loc="best"
                     )
@@ -547,8 +554,6 @@ def plot_cca_modes(
                     fig.savefig(files_root / "figures" / figName, bbox_inches="tight")
     else:
         print("You will need to set MOS=CCA in order to see CCA Modes")
-
-
 
 def plot_forecasts(
     fcsts,
@@ -585,7 +590,7 @@ def plot_forecasts(
         for j, lead_name in enumerate(fcsts['lead_name'].values):
             f = fcsts.sel(model=model, lead_name=lead_name)
             if graph_orientation == "horizontal":
-                fig = plt.figure(figsize=(18, 10), facecolor="w", dpi=my_dpi)
+                fig = plt.figure(figsize=(12, 11), facecolor="w", dpi=my_dpi)
             else:
                 fig = plt.figure(figsize=(15, 12), facecolor="w", dpi=my_dpi)
 
@@ -601,8 +606,9 @@ def plot_forecasts(
                 orientation=graph_orientation,
             )
             cartopyInstance.add_feature(cartopy.feature.BORDERS, edgecolor="black")
+            ## custom
             if (adminLevel != None):
-                cartopyInstance.add_feature(adminLevel)
+                cartopyInstance.add_feature(adminLevel, alpha=0.3)
             cartopyInstance.set_title("")
 
             cartopyInstance.spines["left"].set_color("blue")
@@ -625,12 +631,13 @@ def plot_forecasts(
             ax1.set_xticks([])
             ax1.set_yticks([])
             ax1.imshow(pil_img)
-
+            # read deterministic forecast data
             datart = (
                 f
                 .deterministic.where(lambda x: x > missing_value_flag)
                 .isel(T=-1)
             )
+
             if (
                 any(x in predictand_name for x in ["TMAX", "TMIN", "TMEAN", "TMED"])
                 and i == 0 and j == 0
@@ -638,7 +645,7 @@ def plot_forecasts(
                 vmin = round(float(datart.min()) - 0.5 * 2) / 2
 
             art = datart.plot(
-                figsize=(12, 10),
+                figsize=(12, 12),
                 aspect="equal",
                 yincrease=True,
                 subplot_kws={"projection": ccrs.PlateCarree()},
@@ -658,7 +665,7 @@ def plot_forecasts(
             # plt.axis("off")
             art.axes.coastlines()
 
-            cb = plt.colorbar(art, orientation=graph_orientation)  # location='bottom')
+            cb = plt.colorbar(art, orientation=graph_orientation, shrink=0.85)  # location='bottom')
             cb.set_label(
                 label=datart.attrs["field"] + " [" + datart.attrs["units"] + "]", size=16
             )
@@ -668,8 +675,9 @@ def plot_forecasts(
                 cartopy.feature.BORDERS, edgecolor="black"
             )  # ,linewidth=4.5
             art.axes.coastlines(edgecolor="black")  # ,linewidth=4.5
+            ## custom
             if (adminLevel != None):
-                art.axes.add_feature(adminLevel)
+                art.axes.add_feature(adminLevel, alpha=0.3)
             plt.savefig(
                 files_root / "figures" / "Test.png",
                 bbox_inches="tight",
@@ -687,6 +695,7 @@ def plot_forecasts(
             ax2.set_yticks([])
             ax2.imshow(pil_img)  # , aspect=4 1.45 , extent=[0, 1.45, 1.5, 0],
 
+            ## custom
             # save plots
             figName = (
                 MOS
@@ -1015,16 +1024,18 @@ def plot_flex_forecasts(
 
     # setting up canvas on which to draw
 
-    ForTitle, vmin, vmax, mark, barcolor = ce.prepare_canvas('POE',predictand_name,user_color=color_bar)
+    ForTitle, vmin, vmax, mark, barcolor = ce.prepare_canvas('POE', predictand_name, user_color=color_bar)
 
     nleads = len(fcst_mu['lead_name'])
 
     if graph_orientation == "horizontal":
-        fig = plt.figure(figsize=(15, 20 * nleads))
+        fig = plt.figure(figsize=(14, 15 * nleads))
     else:
-        fig = plt.figure(figsize=(10, 20 * nleads))
+        fig = plt.figure(figsize=(10, 15 * nleads))
 
     gs0 = gridspec.GridSpec(4*nleads, 1, figure=fig)
+
+    print(fcst_mu['lead_name'].values)
 
     for i, lead_name in enumerate(fcst_mu['lead_name'].values):
         # plot exceedance probability map
@@ -1044,7 +1055,7 @@ def plot_flex_forecasts(
         map_ax.scatter(
             [point_longitude],
             [point_latitude],
-            marker="x",
+            marker="*",
             s=100,
             color=mark,
             transform=ccrs.PlateCarree(),
