@@ -2,7 +2,7 @@
 
 PyCPT is a python interface to CPT, the IRI Climate Predictability Tool (https://iri-pycpt.github.io/).
 
-I made minor changes to the core PyCPT plotting functions to include administrative boundary shapefiles, and improved the predictor and predictand domains plot. These updates also enable us to save the predictor and predictand domains, and each weekly forecasts separately (check `exampleNotebooks/pycpt-s2s.ipynb`). If you would like to incorporate these changes for your specific country, please follow these steps and refer to the specific examples provided in `exampleNotebooks` for Ethiopia. This has been tested with the latest `pycpt-2.8.2` as installed following the instructions at [PyCPT Installation Guide](https://iri-pycpt.github.io/installation/).
+I made minor changes to the core PyCPT plotting functions to include administrative boundary shapefiles, improved the predictor and predictand domains plot. These updates also enable us to save the predictor and predictand domains, and each weekly forecasts separately (please check `exampleNotebooks/pycpt-s2s.ipynb` notebook). If you would like to incorporate these changes for your specific country, please follow these steps and refer to the specific examples provided in `exampleNotebooks` for Ethiopia. This has been tested with the latest `pycpt-2.8.2` as installed following the instructions at [PyCPT Installation Guide](https://iri-pycpt.github.io/installation/).
 
 **Steps to follow**
 
@@ -13,6 +13,8 @@ I made minor changes to the core PyCPT plotting functions to include administrat
 2. Copy the following files from the cloned repository to the specified pyCPT installation directory:
 
 `cp pyESA/pycpt/src/pycpt/{subseasonal.py,notebook.py}`   `/home/username/miniconda3/envs/pycpt-2.8.2/lib/python3.10/site-packages/pycpt/`
+
+Note: `username` typically refers to the name of your computer login account. Please verify the path to your PyCPT installation.
 
 *Next steps:*
 
